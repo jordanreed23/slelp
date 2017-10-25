@@ -5,13 +5,39 @@ const bodyParser = require('body-parser');
 const db = require('./db/query');
 const port = process.env.PORT || 3000;
 const app = express();
+<<<<<<< HEAD
 //////////////////////
+=======
+
+var theHelp = {
+  id: 0,
+  group_id: 0,
+  group_name: '',
+  qTitle: '',
+  description: '',
+  help_link: '',
+  category_id: 0,
+  category: '',
+  help_user: '',
+  help_readableTime: '',
+  theAnswer: []
+  // answer_id: 0,
+  // answer_user: '',
+  // answer: '',
+  // answer_link_1: '',
+  // answer_link_2: '',
+  // answer_timestamp: '',
+  // answer_readableTime: '',
+};
+
+>>>>>>> 6e4ad65a92e47a5ac7e7f52e219074f926bfb83e
 var mainData = {
   group_id: 0,
   group_name: '',
   user_id: 0,
   username: '',
   helps: []
+<<<<<<< HEAD
   // helps = {
   //   help_id: 0,
   //   qTitle: '',
@@ -21,6 +47,9 @@ var mainData = {
   // }
 };
 ////-----------------
+=======
+};
+>>>>>>> 6e4ad65a92e47a5ac7e7f52e219074f926bfb83e
 
 app.use(bodyParser.urlencoded({
   extended: false
@@ -85,7 +114,7 @@ app.post('/main', (req, res) => {
           loginError: 'Username or password is invalid'
         });
       } else {
-        ///////////////////
+
         mainData.user_id = user.id;
         mainData.username = user.username;
         mainData.group_id = user.group_id;
@@ -100,13 +129,64 @@ app.post('/main', (req, res) => {
                 console.log(mainData);
                 res.render('main', mainData);
               });
-            ////---------------
           });
       }
     });
 });
 
-/////////////////////
+app.post('/qa/:id', (req, res) => {
+  db.getHelpInfo(req.params.id)
+    .then(help => {
+
+      theHelp.id = help[0].id;
+      theHelp.group_id = help[0].group_id;
+      theHelp.qTitle = help[0].title;
+      theHelp.description = help[0].description;
+      theHelp.help_link = help[0].link;
+      theHelp.category_id = help[0].category_id;
+      theHelp.help_user = help[0].user_id;
+      theHelp.help_readableTime = help[0].readableTime;
+
+      db.getGroupName(help[0].group_id)
+        .then(group => {
+
+          theHelp.group_name = group.group_name;
+          db.getCategory(theHelp.category_id)
+            .then(category => {
+              theHelp.category = category[0].category_name;
+              db.getAnswers(theHelp.id)
+                .then(answer => {
+                  for (var i = 0; i < answer.length; i++) {
+                    getHelpAnswerUser(answer[i]);
+                  }
+
+                    res.render('qa', theHelp);
+                    });
+                });
+            });
+        });
+});
+
+function getHelpAnswerUser(answer) {
+  var answerData = {
+    answer_id: answer.id,
+    answer: answer.answer,
+    answer_link_1: answer.link_1,
+    answer_link_2: answer.link_2,
+    answer_timestamp: answer.timestamp,
+    answer_readableTime: answer.readableTime,
+    answer_user: answer.user_id
+  }
+  db.getAnswerUser(answerData.answer_user)
+    .then(user => {
+      answerData.answer_user = user[0].username;
+      theHelp.theAnswer.push(answerData);
+      console.log(theHelp);
+      return;
+    });
+}
+
+
 function cleanHelps(oneHelp) {
   var help = {
     help_id: oneHelp.id,
@@ -127,15 +207,14 @@ function cleanHelps(oneHelp) {
             help.solution = answer.length;
           }
           db.getCategory(oneHelp.category_id)
-          .then(cat => {
-            help.category = cat[0].category_name;
-            mainData.helps.push(help);
-            return;
-          });
+            .then(cat => {
+              help.category = cat[0].category_name;
+              mainData.helps.push(help);
+              return;
+            });
         });
     });
 }
-/////---------------------
 
 app.listen(port, () => console.log(`Slelp listening on port:
   ${port}`));
