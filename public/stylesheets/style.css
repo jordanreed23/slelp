@@ -6,6 +6,9 @@
     background-image: url('/images/Blue-Background-For-iPhone-5s-.jpg');
     background-size: cover;
   }
+  .desktopInfo{
+    display: none !important;
+  }
   footer {
     position: fixed;
     width: 100vw;
@@ -44,16 +47,24 @@
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
+    border-bottom: 2px solid white;
+    border-right: 2px solid white;
   }
   #info:hover {
     box-shadow: 2px 2px 5px white;
   }
   .arrow{
-    width: 3rem;
-    height: 3rem;
-    border-right: 5px solid white;
-    border-bottom: 5px solid white;
-    margin: 2rem;
+    width: 5rem;
+    height: 4rem;
+    /*padding: .2rem;*/
+    border-bottom: 2px solid white;
+    border-right: 2px solid white;
+    padding-bottom: 1rem;
+    font-size: 30px;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    margin: .5rem;
   }
   #login-container {
     display: flex;
@@ -109,6 +120,7 @@
     justify-content: center;
     align-items: center;
     flex-flow: wrap;
+    transition: 0.3s;
   }
   input {
     width: 100%;
@@ -232,4 +244,54 @@
     border-radius: 50%;
     padding: 2px;
     opacity: 1;
+  }
+  @media only screen and (min-device-width: 737px){
+.desktopInfo{
+  display: flex !important;
+}
+#login-container{
+  display: flex;
+  justify-content: center;
+}
+#logo{
+  font-size: 40px;
+}
+#container{
+  margin: 0;
+}
+.login-create-box{
+  width: 40vw;
+}
+.create-form{
+  display: flex;
+  justify-content: center;
+}
+.login-form{
+  display: flex;
+  justify-content: center;
+}
+.title{
+  height: 10vh;
+  width: 50vw;
+}
+.title h2{
+  font-size: 40px;
+}
+input{
+  height: 5vh;
+}
+.mobileInfo{
+  display: none;
+}
+.arrow{
+  text-align: center;
+  align-content: center;
+  height: 12rem;
+  width: 12rem;
+  padding-bottom: 37px;
+}
+#info{
+  height: 12rem;
+  width: 12rem;
+}
   }
